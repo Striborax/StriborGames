@@ -9,3 +9,6 @@ Every blue circle = +1 score, if circle gets to other side it's -10 score.
 
 ### GAME 2: SHOOTER (under development)
 Move with WASD, use mouse to shoot bullets and shrink enemies.
+
+
+# DO WHATEVER YOU WANT WITH THIS, I DON'T CARE
