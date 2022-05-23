@@ -114,11 +114,11 @@ function playshooterclassic(){
 			this.y = player.y;
 			this.dx = this.x - mouse.x;
 			this.dy = this.y - mouse.y;
-			this.radius = 5;
+			this.radius = 10;
 		}
 		update(){
-			this.x -= this.dx/Math.sqrt(this.dx*this.dx + this.dy*this.dy)*10;
-			this.y -= this.dy/Math.sqrt(this.dx*this.dx + this.dy*this.dy)*10;
+			this.x -= this.dx/Math.sqrt(this.dx*this.dx + this.dy*this.dy)*5;
+			this.y -= this.dy/Math.sqrt(this.dx*this.dx + this.dy*this.dy)*5;
 		}
 		draw(){
 			ctx.fillStyle = "black";
