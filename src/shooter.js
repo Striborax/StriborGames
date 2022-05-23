@@ -201,7 +201,7 @@ function playshooter(){
 		}
 	};
 	function handleEnemies(){
-		if(gameFrame % 10 == 0){
+		if(gameFrame % 20 == 0){
 			enemyArray.push(new Enemy());
 		}
 		for(let i = 0; i < enemyArray.length; i++){
