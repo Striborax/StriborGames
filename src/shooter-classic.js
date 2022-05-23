@@ -1,4 +1,4 @@
-function playshooter(){
+function playshooterclassic(){
 	//setup
 	const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
@@ -11,10 +11,6 @@ function playshooter(){
 	let bulletFrameLimit = 2;
 	let lastBulletFierd = 0;
 	ctx.font = "50px Georgia";
-	var whiteStarImg = new Image();
-	whiteStarImg.src = 'media/white-star.png';
-	var yellowStarImg = new Image();
-	yellowStarImg.src = 'media/yellow-star.png';
 
 
 	//mouse
@@ -105,7 +101,6 @@ function playshooter(){
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
             ctx.fill();
             ctx.closePath();
-			ctx.drawImage(whiteStarImg, this.x-this.radius+4, this.y-this.radius+4, this.radius*2-8, this.radius*2-10);
 		}
 	}
 	const player = new Player;
@@ -192,7 +187,6 @@ function playshooter(){
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
             ctx.fill();
             ctx.closePath();
-			ctx.drawImage(yellowStarImg, this.x-this.radius+4, this.y-this.radius+4, this.radius*2-8, this.radius*2-10);
 		}
 	};
 	function handleEnemies(){
