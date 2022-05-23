@@ -7,6 +7,7 @@ function playshooter(){
 
 	let score = 0;
 	let gameFrame = 0;
+	let lastred = 0;
 	let bulletFrameLimit = 2;
 	let lastBulletFierd = 0;
 	ctx.font = "50px Georgia";
@@ -169,6 +170,7 @@ function playshooter(){
 			this.dx = 0;
 			this.dy = 0;
 			this.distance = 0;
+			this.playerDistance = 0;
 			this.visible = true;
 		}
 		update(){
@@ -176,19 +178,22 @@ function playshooter(){
 				this.dx = bulletArray[i].x - this.x;
 				this.dy = bulletArray[i].y - this.y;
 				this.distance = Math.sqrt(this.dx*this.dx + this.dy*this.dy);
-				if(this.distance < this.radius && this.visible){
+				if(this.distance < this.radius + bulletArray[i].radius && this.visible){
 					this.radius-=5;
+					score++;
 					bulletArray.splice(i, 1);
 				}
+			}
+			this.playerDistance = Math.sqrt((player.x-this.x)**2 + (player.y-this.y)**2);
+			if(this.playerDistance < this.radius + player.radius && this.visible){
+				score -= this.radius | 0;
+				this.visible = false;
+				lastred = gameFrame;
 			}
 			this.x += 5*this.direction;
 		}
 		draw(){
-			if(this.visible){
-				ctx.fillStyle = "red";
-			}else{
-				ctx.fillStyle = "#fff";
-			}
+			ctx.fillStyle = "red"
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
             ctx.fill();
@@ -206,9 +211,12 @@ function playshooter(){
 				enemyArray[i].visible = false;
 			}
 			if(enemyArray[i].direction == 1 && enemyArray[i].x > canvas.width){
-				enemyArray.splice(i, 1);
+				enemyArray[i].visible = false;
 			}
 			if(enemyArray[i].direction == -1 && enemyArray[i].x < 0){
+				enemyArray[i].visible = false;
+			}
+			if(enemyArray[i].visible == false){
 				enemyArray.splice(i, 1);
 			}
 		}
@@ -217,11 +225,18 @@ function playshooter(){
 
 	//update
 	function updateGame(){
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		if(gameFrame - lastred < 10){
+			ctx.fillStyle = '#f44';
+		}else{
+			ctx.fillStyle = '#fff';
+		}
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		handleEnemies();
 		handleBullets();
 		player.update();
 		player.draw();
+		ctx.fillStyle = 'black';
+        ctx.fillText('score: ' + score, 10, 50);
 		gameFrame++;
 		requestAnimationFrame(updateGame);
 	}
