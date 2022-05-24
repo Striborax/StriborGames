@@ -38,10 +38,10 @@ function playbubble(){
             const dx = this.x - mouse.x;
             const dy = this.y - mouse.y;
             if(mouse.x != this.x){
-                this.x -= dx/20;
+                this.x -= dx/20 + gameFrame/1000;
             }
             if(mouse.y != this.y){
-                this.y -= dy/20;
+                this.y -= dy/20 + gameFrame/1000;
             }
         }
         draw(){
