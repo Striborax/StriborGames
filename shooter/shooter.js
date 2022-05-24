@@ -12,9 +12,9 @@ function playshooter(){
 	let lastBulletFierd = 0;
 	ctx.font = "50px Georgia";
 	var whiteStarImg = new Image();
-	whiteStarImg.src = 'media/white-star.png';
+	whiteStarImg.src = 'white-star.png';
 	var yellowStarImg = new Image();
-	yellowStarImg.src = 'media/yellow-star.png';
+	yellowStarImg.src = 'yellow-star.png';
 
 
 	//mouse
