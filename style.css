@@ -15,7 +15,7 @@ body{
 }
 
 .button{
-    align-self: center;
+    align-self: baseline;
     border: none;
     color: white;
     padding: 16px 32px;
