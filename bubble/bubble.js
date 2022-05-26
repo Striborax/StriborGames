@@ -37,8 +37,14 @@ function playbubble(){
             if(mouse.y < 0){mouse.y = 0;}
             const dx = this.x - mouse.x;
             const dy = this.y - mouse.y;
+            if(gameFrame < 20000){
                 this.x -= dx/(20-gameFrame/1000);
                 this.y -= dy/(20-gameFrame/1000);
+            }
+            else{
+                this.x -= dx/3;
+                this.y -= dy/3;
+            }
         }
         draw(){
             ctx.lineWidth = 0.5;
