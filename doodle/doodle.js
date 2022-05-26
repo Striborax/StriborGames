@@ -5,8 +5,7 @@ function playdoodle(){
     canvas.width = 500;
     canvas.height = 700;
 
-	let score = 0;
-	let gameFrame = 0;
+	let lastCrnac = 0;
 	let distance = 0;
 	let lastNew = 0;
 	ctx.font = "50px Georgia";
@@ -15,7 +14,8 @@ function playdoodle(){
 	//keyboard
 	const keyboard = {
 		left: false,
-		right: false
+		right: false,
+		shoot: false
 	}
 	window.addEventListener('keydown', function(event){
 		switch(event.keyCode){
@@ -24,6 +24,10 @@ function playdoodle(){
 				break;
 			case 68:
 				keyboard.right = true;
+				break;
+			case 87:
+				keyboard.shoot = true;
+				break;
 			default:
 				break;
 		}
@@ -35,6 +39,10 @@ function playdoodle(){
 				break;
 			case 68:
 				keyboard.right = false;
+				break;
+			case 87:
+				keyboard.shoot = false;
+				break;
 			default:
 				break;
 		}
@@ -46,6 +54,9 @@ function playdoodle(){
 		constructor(){
 			this.x = canvas.width/2;
 			this.y = canvas.height/2;
+			this.visible = false;
+			this.bulletX = -100;
+			this.bulletY = 0;
 			this.height = 60;
 			this.width = 50;
 			this.speed = 10;
@@ -65,18 +76,36 @@ function playdoodle(){
 				this.x = canvas.width - this.width/2;
 			if(this.x < this.width/2)
 				this.x = this.width/2;
-
 			if(this.velocity < 20)
 				this.velocity++;
 			this.y += this.velocity;
 			if(this.y < canvas.height/2){
 				this.y = canvas.height/2;
 				distance -= this.velocity;
+				this.bulletY -= this.velocity;
 			}
+			//bullet
+			if(keyboard.shoot){
+				this.bulletX = this.x;
+				this.bulletY = this.y;
+				this.visible = true;
+			}
+			if(this.visible)
+				this.bulletY-=20;
+			if(this.bulletY < 0){
+				this.bulletX = -100;
+				this.visible = false;
+			}
+			console.log(this.visible);
 		}
 		draw(){
 			ctx.fillStyle = "red";
 			ctx.fillRect(this.x - this.width/2, this.y - this.height, this.width, this.height);
+			//bullet
+			if(this.visible){
+				ctx.fillStyle = "black";
+				ctx.fillRect(this.bulletX - 5, this.bulletY - 5, 10, 10);
+			}
 		}
 	}
 	const player = new Player;
@@ -85,15 +114,14 @@ function playdoodle(){
 	//things
 	let thingArray = [];
 	class Thing{
-		constructor(){
+		constructor(crnac){
 			this.x = Math.random()*canvas.width;
 			this.y = 0;
 			this.height = 25;
 			this.width = 100;
 			this.visible = true;
 			this.feder = Math.random()*100 < 5;
-			if(!this.feder)
-				this.crnac = Math.random()*100 < 5;
+			this.crnac = crnac;
 		}
 		update(){
 			if(player.y == canvas.height/2){
@@ -112,6 +140,10 @@ function playdoodle(){
 			}
 			if(this.y > canvas.height)
 				this.visible = false;
+			if(this.visible && player.visible && player.bulletY > this.y-this.height && player.bulletY < this.y && player.bulletX < this.x+this.width/2 && player.bulletX > this.x-this.width/2 && this.crnac){
+				this.crnac = false;
+				player.visible = false;
+			}
 		}
 		draw(){
 			if(this.visible){
@@ -126,13 +158,17 @@ function playdoodle(){
 		}
 	}
 	for(let i = -7; i < 7; i++){
-		thingArray.push(new Thing);
+		thingArray.push(new Thing(false));
 		thingArray[i+7].y = i*100;
 	}
 	function handleThings(){
 		if(distance - lastNew > 100){
-			thingArray.push(new Thing);
+			thingArray.push(new Thing(false));
 			lastNew += 100;
+		}
+		if(distance - lastCrnac > 1000){
+			thingArray.push(new Thing(true));
+			lastCrnac += 1000;
 		}
 		for(let i = 0; i < thingArray.length; i++){
 			thingArray[i].update();
@@ -152,7 +188,6 @@ function playdoodle(){
 		player.draw();
 		ctx.fillStyle = 'black';
         ctx.fillText('score: ' + distance, 10, 50);
-		gameFrame++;
 		requestAnimationFrame(updateGame);
 	}
 	updateGame();
