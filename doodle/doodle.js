@@ -48,7 +48,7 @@ function playdoodle(){
 			this.y = canvas.height/2;
 			this.height = 60;
 			this.width = 50;
-			this.speed = 8;
+			this.speed = 10;
 			this.velocity = 0;
 		}
 		update(){
@@ -56,8 +56,11 @@ function playdoodle(){
 				this.x-=this.speed;
 			if(keyboard.right)
 				this.x+=this.speed;
-			if(this.y > canvas.height)
+			if(this.y > canvas.height){
 				this.velocity=-25;
+				distance = 0;
+				lastNew = 0;
+			}
 			if(this.x > canvas.width - this.width/2)
 				this.x = canvas.width - this.width/2;
 			if(this.x < this.width/2)
@@ -88,23 +91,36 @@ function playdoodle(){
 			this.height = 25;
 			this.width = 100;
 			this.visible = true;
+			this.feder = Math.random()*100 < 5;
+			if(!this.feder)
+				this.crnac = Math.random()*100 < 5;
 		}
 		update(){
 			if(player.y == canvas.height/2){
 				this.y-=player.velocity;
 			}
 			if(this.visible && player.y > this.y-this.height && player.y < this.y && player.x-player.width/2 < this.x+this.width/2 && player.x+player.width/2 > this.x-this.width/2 && player.velocity > 0){
-				score++;
-				player.velocity=-25;
+				if(this.feder)
+					player.velocity=-100;
+				else if(this.crnac){
+					distance = 0;
+					lastNew = 0;
+				}
+				else
+					player.velocity=-25;
 				this.visible = false;
 			}
-			if(this.y > canvas.height){
+			if(this.y > canvas.height)
 				this.visible = false;
-			}
 		}
 		draw(){
 			if(this.visible){
-				ctx.fillStyle = "blue";
+				if(this.feder)
+					ctx.fillStyle = "#cc0";
+				else if(this.crnac)
+					ctx.fillStyle = "black";
+				else
+					ctx.fillStyle = "blue";
 				ctx.fillRect(this.x - this.width/2, this.y - this.height, this.width, this.height);
 			}
 		}
