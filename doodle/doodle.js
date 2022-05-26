@@ -71,6 +71,7 @@ function playdoodle(){
 				this.velocity=-25;
 				distance = 0;
 				lastNew = 0;
+				lastCrnac = 0;
 			}
 			if(this.x > canvas.width - this.width/2)
 				this.x = canvas.width - this.width/2;
@@ -133,6 +134,7 @@ function playdoodle(){
 				else if(this.crnac){
 					distance = 0;
 					lastNew = 0;
+					lastCrnac = 0;
 				}
 				else
 					player.velocity=-25;
@@ -168,7 +170,7 @@ function playdoodle(){
 		}
 		if(distance - lastCrnac > 1000){
 			thingArray.push(new Thing(true));
-			lastCrnac += 1000;
+			lastCrnac = distance;
 		}
 		for(let i = 0; i < thingArray.length; i++){
 			thingArray[i].update();
