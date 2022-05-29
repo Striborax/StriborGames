@@ -1,4 +1,4 @@
-import {io} from 'socket.io';
+// import {io} from 'socket.io-client';
 const socket = io('https://tileworld.org');
 const canvas = document.getElementById('canvas1');
 const ctx = canvas.getContext('2d');
